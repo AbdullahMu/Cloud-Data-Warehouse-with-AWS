@@ -1,7 +1,3 @@
----
-
-
----
 
 <h1 id="project-data-warehouse">Project: Data Warehouse</h1>
 <h2 id="bintroductionb"><b>Introduction</b></h2>
