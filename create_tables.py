@@ -3,8 +3,8 @@ import psycopg2
 from sql_queries import create_table_queries, drop_table_queries
 
 def drop_tables(cur, conn):
-    """drop database tables from drop_table_queries, 
-    a list with DROP statements
+    """
+    retrieves DROP statements from the list 'drop_table_queries', then excute them on the curser to drop database tables
     """
     for query in drop_table_queries:
         print('Executing drop: '+query)
@@ -12,8 +12,8 @@ def drop_tables(cur, conn):
         conn.commit()
 
 def create_tables(cur, conn):
-    """ create database tables from create_table_queries, 
-    a list with INSERT statements
+    """
+    retrieves INSERT statements from the list 'create_table_queries', then excute them on the curser to create database tables
     """
     for query in create_table_queries:
         print('Executing create: '+query)
@@ -23,14 +23,17 @@ def create_tables(cur, conn):
 
 def main():
     """
-    Extract songs metadata and user activity data from S3, transform it using a staging table, and load it into dimensional tables for analysis
+    Connect to the Redshift database and excute the ETL pipeline: 
+    - Extract songs metadata and user activity data from S3 bucket, 
+    - Transform it using a staging table, 
+    - Load it into dimensional tables in Redshift cluster for analysis
     """
     config = configparser.ConfigParser()
     config.read('dwh.cfg')
 
-    print('Connecting to redshift')
+    print('Connecting to Redshift')
     conn = psycopg2.connect("host={} dbname={} user={} password={} port={}".format(*config['CLUSTER'].values()))
-    print('Connected to redshift')
+    print('Connected')
     cur = conn.cursor()
 
     print('Dropping existing tables if any')
@@ -40,7 +43,7 @@ def main():
     create_tables(cur, conn)
 
     conn.close()
-    print('Create table Ended')
+    print('Created')
 
 
 if __name__ == "__main__":
